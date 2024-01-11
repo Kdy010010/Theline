@@ -2,53 +2,105 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game Start Screen</title>
+    <!-- Updated viewport settings to prevent zooming -->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Simple Game</title>
     <style>
         body, html {
             margin: 0;
             padding: 0;
+            overflow: hidden; /* Prevents scrolling */
+        }
+
+        #game {
+            position: relative;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        #background {
+            position: absolute;
+            width: 100%;
             height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            background-color: #282c34;
-            color: white;
-            font-family: Arial, sans-serif;
         }
 
-        #start-screen {
-            text-align: center;
+        #character {
+            position: absolute;
+            width: 50px; /* Adjust size as needed */
+            height: 50px; /* Adjust size as needed */
         }
 
-        #play-button {
-            background-color: #4CAF50;
-            color: white;
-            padding: 15px 32px;
-            text-align: center;
-            text-decoration: none;
-            display: inline-block;
-            font-size: 16px;
-            margin: 4px 2px;
-            cursor: pointer;
+        .control-button {
+            position: fixed;
+            bottom: 20px;
+            background-color: lightgray;
             border: none;
-            border-radius: 8px;
-            transition: background-color 0.3s;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+            font-size: 24px; /* 화살표 크기 조절 */
         }
 
-        #play-button:hover {
-            background-color: #45a049;
-        }
+        #left-button { left: 20px; }
+        #right-button { left: 120px; }
+        #up-button { left: 70px; bottom: 70px; }
+        #down-button { left: 70px; }
     </style>
 </head>
 <body>
-    <div id="start-screen">
-        <h1>Welcome to Our Game!</h1>
-        <button id="play-button">Play</button>
+    <div id="game">
+        <img src="vid.gif" id="background">
+        <img src="character.jpg" id="character" style="left: 0; top: 0;">
     </div>
+    <button id="left-button" class="control-button">&#8592;</button> <!-- Left Arrow -->
+    <button id="right-button" class="control-button">&#8594;</button> <!-- Right Arrow -->
+    <button id="up-button" class="control-button">&#8593;</button> <!-- Up Arrow -->
+    <button id="down-button" class="control-button">&#8595;</button> <!-- Down Arrow -->
+
     <script>
-        document.getElementById('play-button').addEventListener('click', function() {
-            window.location.href = '1.html';
+        document.addEventListener('DOMContentLoaded', function() {
+            const character = document.getElementById('character');
+            let posX = 0;
+            let posY = 0;
+
+            function moveCharacter(dx, dy) {
+                posX += dx;
+                posY += dy;
+                character.style.left = posX + 'px';
+                character.style.top = posY + 'px';
+
+                checkCollision();
+            }
+
+            function checkCollision() {
+                // Simplified collision detection
+                const redZone = document.elementFromPoint(posX, posY);
+
+                if (redZone && redZone.style.backgroundColor === 'rgb(255, 0, 0)') {
+                    alert('사망');
+                    // Reset position or handle game over
+                }
+
+                if (redZone && redZone.style.backgroundColor === 'rgb(136, 68, 0)') {
+                    window.location.href = '2.html';
+                }
+            }
+
+            document.addEventListener('keydown', function(event) {
+                switch(event.key) {
+                    case 'ArrowLeft': moveCharacter(-10, 0); break;
+                    case 'ArrowRight': moveCharacter(10, 0); break;
+                    case 'ArrowUp': moveCharacter(0, -10); break;
+                    case 'ArrowDown': moveCharacter(0, 10); break;
+                }
+            });
+
+            // 화살표 버튼 이벤트 리스너 추가
+            document.getElementById('left-button').addEventListener('click', function() { moveCharacter(-10, 0); });
+            document.getElementById('right-button').addEventListener('click', function() { moveCharacter(10, 0); });
+            document.getElementById('up-button').addEventListener('click', function() { moveCharacter(0, -10); });
+            document.getElementById('down-button').addEventListener('click', function() { moveCharacter(0, 10); });
         });
     </script>
 </body>
