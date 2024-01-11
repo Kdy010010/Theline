@@ -29,6 +29,22 @@
             width: 50px; /* Adjust size as needed */
             height: 50px; /* Adjust size as needed */
         }
+
+        .control-button {
+            position: fixed;
+            bottom: 20px;
+            background-color: lightgray;
+            border: none;
+            border-radius: 50%;
+            width: 50px;
+            height: 50px;
+            cursor: pointer;
+        }
+
+        #left-button { left: 20px; }
+        #right-button { left: 90px; }
+        #up-button { left: 55px; bottom: 70px; }
+        #down-button { left: 55px; bottom: 20px; }
     </style>
 </head>
 <body>
@@ -36,6 +52,11 @@
         <img src="vid.gif" id="background">
         <img src="character.jpg" id="character" style="left: 0; top: 0;">
     </div>
+    <button id="left-button" class="control-button">&larr;</button>
+    <button id="right-button" class="control-button">&rarr;</button>
+    <button id="up-button" class="control-button">&uarr;</button>
+    <button id="down-button" class="control-button">&darr;</button>
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const character = document.getElementById('character');
@@ -73,6 +94,12 @@
                     case 'ArrowDown': moveCharacter(0, 10); break;
                 }
             });
+
+            // Event listeners for control buttons
+            document.getElementById('left-button').addEventListener('click', function() { moveCharacter(-10, 0); });
+            document.getElementById('right-button').addEventListener('click', function() { moveCharacter(10, 0); });
+            document.getElementById('up-button').addEventListener('click', function() { moveCharacter(0, -10); });
+            document.getElementById('down-button').addEventListener('click', function() { moveCharacter(0, 10); });
         });
     </script>
 </body>
